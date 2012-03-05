@@ -7,11 +7,15 @@
     <script type="text/javascript" src="js/raphael-drag.js"></script>
     <script type="text/javascript">
 		window.addEvent('domready', function(){
-			paper = Raphael('canvas', 500, 300);
+			myAttr = {
+				'fill', '#333'
+			};
+
+			paper  = Raphael('canvas', 500, 300);
 			
-			box = paper.rect(100, 100, 50, 50).attr('fill', '#333');
-			circle = paper.circle(250, 100, 50, 50).attr('fill', '#333');
-			box2 = paper.rect(400, 100, 50, 50).attr('fill', '#333');
+			box    = paper.rect(100, 100, 50, 50).attr(myAttr);
+			circle = paper.circle(250, 100, 50, 50).attr(myAttr);
+			box2   = paper.rect(400, 100, 50, 50).attr(myAttr);
 			
 			// Setup the drag
 			Drag.add([box, circle, box2]);
