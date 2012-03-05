@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RaphaelJS: Drag n' Drop</title>
+    <script type="text/javascript" src="js/moo.js"></script>
+    <script type="text/javascript" src="js/raphael-min.js"></script>
+    <script type="text/javascript" src="js/raphael-drag.js"></script>
+    <script type="text/javascript">
+		window.addEvent('domready', function(){
+			paper = Raphael('canvas', 500, 300);
+			
+			box = paper.rect(100, 100, 50, 50).attr('fill', '#333');
+			circle = paper.circle(250, 100, 50, 50).attr('fill', '#333');
+			box2 = paper.rect(400, 100, 50, 50).attr('fill', '#333');
+			
+			// Setup the drag
+			Drag.add([box, circle, box2]);
+			
+			Drag.addEvents({
+			    dragStart: function(ele, intersects, axis, info) {
+			        ele.attr('fill', 'red');
+			    },
+			    dragMove: function(ele, intersects, axis, info, newValues) {
+			        intersects.each(function(el) {
+			            el.attr('fill', 'green');
+			        });
+			    },
+			    dragOut: function(ele, el) {
+			        el.attr('fill', '#333');
+			    },
+			    dragDone: function(ele, intersects) {
+			        ele.attr('fill', '#333');
+			        intersects.each(function(el) {
+			            el.attr('fill', 'blue');
+			        });
+			    }
+			});
+		});
+    </script>
+</head>
+<body>
+	<div id="canvas"></div>
+</body>
+</html>
