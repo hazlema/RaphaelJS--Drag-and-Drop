@@ -6,17 +6,25 @@
     <script type="text/javascript" src="js/raphael-min.js"></script>
     <script type="text/javascript" src="js/raphael-drag.js"></script>
     <script type="text/javascript">
+		function debugPrint(str) {
+			$('debug').value += str + "\n";
+		}
+		
 		window.addEvent('domready', function(){
 			paper  = Raphael('canvas', 800, 300);
-			
+
 			myAttr = {'fill': '#333'};
 			box    = paper.rect(100, 100, 50, 50).attr(myAttr);
 			circle = paper.circle(250, 100, 50, 50).attr(myAttr);
 			box2   = paper.rect(400, 100, 50, 50).attr(myAttr);
 			
 			// Setup the drag
-			Drag.add([box, circle, box2]);
-			
+			Drag.add([
+				{o: box,    name: 'box #1'},
+				{o: circle, name: 'circle #1'},
+				{o: box2,   name: 'box #2'}
+			]);
+
 			Drag.addEvents({
 			    dragStart: function(ele, intersects, axis, info) {
 			        ele.attr('fill', 'red');
@@ -30,6 +38,22 @@
 			        el.attr('fill', '#333');
 			    },
 			    dragDone: function(ele, intersects) {
+			        //
+			        // Get the friendlynames for each object
+			        //
+			        names = [];
+			        intersects.each(function(el){
+			        	names.push(el.friendlyName());
+			        });
+			        	
+			        //
+			        // Write it to the debug box
+			        //
+			        debugPrint('{this} intersects {these}'.substitute({
+			        	'this': ele.friendlyName(),
+			            'these': names.join(', ')
+			        }));
+			        
 			        ele.attr('fill', '#333');
 			        intersects.each(function(el) {
 			            el.attr('fill', 'blue');
@@ -40,7 +64,9 @@
     </script>
 </head>
 <body>
-	<h1>Simple Dragging</h1>
+	<h1>Simple Dragging with custom object names</h1>
 	<div id="canvas"></div>
+	Human readable output:<br>
+	<textarea id="debug" style="width:600px;height:100px" value=""></textarea>
 </body>
 </html>

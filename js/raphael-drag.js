@@ -102,8 +102,8 @@ Raphael.el.getAll = function(){
  *      Use: isIntersect = myObject.intersects(myObject);
  */
 Raphael.el.intersects = function(cmp){
-    var r1Box = this.getBBox(true),
-        r2Box = cmp.getBBox(true);
+    var r1Box = this.getBBox(),
+        r2Box = cmp.getBBox();
 
     r1 = {
         top: (r1Box.y).toInt(),
@@ -143,6 +143,21 @@ Raphael.el.intersectsWith = function(){
     }.bind(this));
 
     return list;
+},
+
+/***
+ * Function: friendlyName()
+ *     Args: none -or- name as string
+ *    Notes: This is a setter or a getter
+ *  Returns: object
+ *      Use: object.friendlyName('bob');
+ */
+Raphael.el.friendlyName = function(setName){
+	if (setName) {
+		this.data('friendlyName', setName);
+	}
+	
+	return this.data('friendlyName');
 }
 
 var DragHelper = new Class({
@@ -156,9 +171,15 @@ var DragHelper = new Class({
         switch (typeOf(el)){
             case 'array':
                 el.each(function(e){
-                    e.drag(this.moveDrag, this.startDrag, this.doneDrag);
-			        e.attr('cursor', 'pointer');
-                }.bind(this));
+                    if (e.o) {
+	                    e.o.drag(this.moveDrag, this.startDrag, this.doneDrag);
+	                    e.o.friendlyName(e.name);
+				        e.o.attr('cursor', 'pointer');
+				    } else {
+	                    e.drag(this.moveDrag, this.startDrag, this.doneDrag);
+				        e.attr('cursor', 'pointer');
+				    }
+   	            }.bind(this));
                 break;
 
              case 'object':
@@ -219,7 +240,12 @@ var DragHelper = new Class({
     doneDrag: function (){
         this.attr('opacity', 1);
         this.attr('cursor', 'pointer');
-
+		
+		dragNames = '';
+		this.intersectsWith().each(function(el){
+			dragNames += ', ' + el.friendlyName();
+		});
+			
         Drag.dragOuts.empty();
         Drag.fireEvent('dragDone', [this, this.intersectsWith()]);
     }
