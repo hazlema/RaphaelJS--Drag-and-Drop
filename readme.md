@@ -56,4 +56,10 @@ A class that handles the Drag and Drop operations for you.  All you have to do i
 	 *  Returns: [ object, object, object ]
 	 *      Use: allIntersect = myObject.intersectsWith();
 
+	 * Function: friendlyName()
+	 *     Args: none -or- name as string
+	 *    Notes: This is a setter or a getter
+	 *  Returns: object
+	 *      Use: object.friendlyName('bob');
+
 Please see the examples for more information.

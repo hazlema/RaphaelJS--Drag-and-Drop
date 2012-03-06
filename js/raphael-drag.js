@@ -240,11 +240,6 @@ var DragHelper = new Class({
     doneDrag: function (){
         this.attr('opacity', 1);
         this.attr('cursor', 'pointer');
-		
-		dragNames = '';
-		this.intersectsWith().each(function(el){
-			dragNames += ', ' + el.friendlyName();
-		});
 			
         Drag.dragOuts.empty();
         Drag.fireEvent('dragDone', [this, this.intersectsWith()]);
